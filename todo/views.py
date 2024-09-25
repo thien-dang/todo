@@ -17,7 +17,17 @@ def mark_as_done(request, pk):
         task.is_completed = True
         task.save()
     except Http404:
-        # TODO: Add a feature to handle Http404 if needed.
-        pass
+        pass  # TODO: Add a feature to handle Http404 if needed.
+
+    return redirect('home')
+
+
+def mark_as_undone(request, pk):
+    try:
+        task = get_object_or_404(Task, pk=pk)
+        task.is_completed = False
+        task.save()
+    except Http404:
+        pass  # TODO: Add a feature to handle Http404 if needed.
 
     return redirect('home')
