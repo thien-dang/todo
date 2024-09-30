@@ -1,4 +1,4 @@
-from django.shortcuts import redirect, get_object_or_404
+from django.shortcuts import render, redirect, get_object_or_404
 from django.http import Http404
 
 from .models import Task
@@ -31,3 +31,18 @@ def mark_as_undone(request, pk):
         pass  # TODO: Add a feature to handle Http404 if needed.
 
     return redirect('home')
+
+
+def edit_task(request, pk):
+    current_task = get_object_or_404(Task, pk=pk)
+
+    if request.method == 'POST':
+        new_task = request.POST['new task']
+        current_task.task = new_task
+        current_task.save()
+        return redirect('home')
+    else:
+        context = {
+            'current_task': current_task
+        }
+        return render(request, 'edit_task.html', context=context)
